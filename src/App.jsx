@@ -54,7 +54,7 @@ function App() {
               <span>{totalSelectedImg}</span> files selected
             </div>
             <p
-              className="px-2 border-b border-b-transparent font-semibold hover:border-b hover:border-b-red-700 text-red-800 transition duration-200 "
+              className="px-2 border-b border-b-transparent font-semibold hover:border-b hover:border-b-red-700 text-red-800 transition duration-200 cursor-pointer "
               onClick={handleDelete}
             >
               Delete{totalSelectedImg <= 1 ? " file" : " files"}
