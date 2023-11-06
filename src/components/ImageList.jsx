@@ -2,7 +2,8 @@ import AddImage from "./AddImage";
 import Image from "./Image";
 function ImageList({ images, onUpdateImage, dragEnd, dragImg, dragOverImg }) {
   // set the featured Image
-  const featuredImg = images[0].id;
+  // console.log(images.length);
+  const featuredImg = images.length >= 1 ? images[0].id : null;
 
   return (
     // image container

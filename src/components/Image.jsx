@@ -23,7 +23,8 @@ function Image({ image, onUpdateImage, featuredImg, ...rest }) {
         <form action="">
           <input
             type="checkbox"
-            value={image.checked}
+            // value={image.checked}
+            checked={image.checked}
             onChange={() => onUpdateImage(image.id)}
             className="h-4 w-4 text-blue-600 "
           />
