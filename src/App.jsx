@@ -1,35 +1,61 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { allimages } from "./assets/Images";
 import ImageList from "./components/ImageList";
 function App() {
   const [images, setImages] = useState(allimages);
   const totalSelectedImg = images.filter((image) => image.checked).length;
 
+  const dragImg = useRef(null);
+  const dragOverImg = useRef(null);
+
   const updateImage = (id) => {
-    const updatedImages = images.map((image) =>
+    // console.log("alert");
+    const updatedImages = [...images].map((image) =>
       image.id === id ? { ...image, checked: !image.checked } : image
     );
     setImages(updatedImages);
   };
-
+  //delete the selected images
   const handleDelete = () => {
-    setImages((images) => images.filter((image) => !image.checked));
+    // console.log("alert");
+    setImages((images) => [...images].filter((image) => !image.checked));
+  };
+
+  const dragEnd = () => {
+    console.log(dragImg, dragOverImg);
+    const updatedItems = [...images];
+
+    // Remove the dragged item
+    const [draggedItem] = updatedItems.splice(dragImg.current, 1);
+    // console.log(draggedItem, updatedItems);
+    // Insert it at the new position
+
+    updatedItems.splice(dragOverImg.current, 0, draggedItem);
+
+    // Update the source and target indices
+    dragImg.current = null;
+    dragOverImg.current = null;
+
+    // Update the state with the reordered array
+    // console.log(updatedItems);
+    setImages(updatedItems);
   };
   return (
-    <section className="bg-gray-200  w-full ">
+    <section className="bg-gray-200  w-full md:h-screen p-3 ">
       {/* container  */}
       <div className="container max-w-5xl  mx-auto   bg-white rounded-md ">
         {/* title  */}
         {totalSelectedImg > 0 ? (
           <div className="px-8 pb-3 pt-2 flex items-center justify-between">
-            <p>
+            <div className="flex items-center gap-1 justify-center">
+              <input type="checkbox" checked />
               <span>{totalSelectedImg}</span> files selected
-            </p>
+            </div>
             <button
               className="px-2 py-1 font-semibold border-b text-red-800 "
               onClick={handleDelete}
             >
-              Delete all images
+              {totalSelectedImg <= 1 ? "Delete file" : "Delete files"}
             </button>
           </div>
         ) : (
@@ -37,7 +63,13 @@ function App() {
         )}
         <hr />
 
-        <ImageList images={images} onUpdateImage={updateImage} />
+        <ImageList
+          images={images}
+          onUpdateImage={updateImage}
+          dragEnd={dragEnd}
+          dragImg={dragImg}
+          dragOverImg={dragOverImg}
+        />
       </div>
     </section>
   );
