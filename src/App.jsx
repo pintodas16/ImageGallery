@@ -8,6 +8,7 @@ function App() {
   const dragImg = useRef(null);
   const dragOverImg = useRef(null);
 
+  // update the !checked status of  image
   const updateImage = (id) => {
     // console.log("alert");
     const updatedImages = [...images].map((image) =>
@@ -21,16 +22,17 @@ function App() {
     setImages((images) => [...images].filter((image) => !image.checked));
   };
 
+  // sort after drag event end
   const dragEnd = () => {
     console.log(dragImg, dragOverImg);
-    const updatedItems = [...images];
+    const updatedImages = [...images];
 
     // Remove the dragged item
-    const [draggedItem] = updatedItems.splice(dragImg.current, 1);
+    const [draggedImg] = updatedImages.splice(dragImg.current, 1);
     // console.log(draggedItem, updatedItems);
     // Insert it at the new position
 
-    updatedItems.splice(dragOverImg.current, 0, draggedItem);
+    updatedImages.splice(dragOverImg.current, 0, draggedImg);
 
     // Update the source and target indices
     dragImg.current = null;
@@ -38,7 +40,7 @@ function App() {
 
     // Update the state with the reordered array
     // console.log(updatedItems);
-    setImages(updatedItems);
+    setImages(updatedImages);
   };
   return (
     <section className="bg-gray-200  w-full md:h-screen p-3 ">
@@ -51,12 +53,12 @@ function App() {
               <input type="checkbox" checked />
               <span>{totalSelectedImg}</span> files selected
             </div>
-            <button
-              className="px-2 py-1 font-semibold border-b text-red-800 "
+            <p
+              className="px-2 border-b border-b-transparent font-semibold hover:border-b hover:border-b-red-700 text-red-800 transition duration-200 "
               onClick={handleDelete}
             >
-              {totalSelectedImg <= 1 ? "Delete file" : "Delete files"}
-            </button>
+              Delete{totalSelectedImg <= 1 ? " file" : " files"}
+            </p>
           </div>
         ) : (
           <h5 className="px-4 pt-2 pb-3">Gallery</h5>
